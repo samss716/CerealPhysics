@@ -1,0 +1,29 @@
+# CMake build directories
+build-*/
+
+# Visual Studio files
+.vs/
+
+# Compiled executables and object files
+*.exe
+*.obj
+*.pdb
+*.ilk
+
+build-*/
+#Blender preparation tips:
+1. Set your scene units to Metric.
+2. Apply object scale with Ctrl + A → Scale.
+3. Make sure the object origin is centered appropriately.
+4. Copy of the original mesh is kept before exporting.
+5. Export as .obj or .stl.
+
+
+# Compile project
+cmake --build build-x64
+
+# Run simulation
+.\build-x64\CerealPhysics.exe
+
+#When adding a new .cpp file or changing CMakeLists.txt, reconfigure with:
+cmake -S . -B build-x64 -G "Nmake Makefiles"
