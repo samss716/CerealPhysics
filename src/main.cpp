@@ -8,10 +8,10 @@ int main()
 {
 
     // Simulation settings
-    const double deltaTime = 1.0 / 120.0;
-    const int totalSteps = 120;
+    const double fixedTimeStep = 1.0 / 120.0; // fixed physics timestep
+    const double simulationDuration = 1.0;
 
-    // Gravity acceleration (Y-up coordinate system)
+    // create physics world
     PhysicsWorld world(Vector3(0.0, -9.81, 0.0));
 
     // Create a cereal piece
@@ -19,10 +19,22 @@ int main()
 
     std::cout << "CerealPhysics initialized!\n";
 
+    double accumulator = 0.0;
+    double elapsedTime = 0.0;
+
     // Run the simulation
-    for (int step = 0; step < totalSteps; step++)
+    while (elapsedTime < simulationDuration)
     {
-        world.step(deltaTime);
+        const double frameTime = 1.0 / 60.0;
+
+        accumulator += frameTime;
+        elapsedTime += frameTime;
+
+        while (accumulator >= fixedTimeStep)
+        {
+            world.step(fixedTimeStep);
+            accumulator -= fixedTimeStep;
+        }
     }
 
     // retrieve sim cereal piece
@@ -32,8 +44,6 @@ int main()
     std::cout << std::fixed << std::setprecision(4);
 
     std::cout << "Simulation complete!\n\n";
-
-    std::cout << "num of bodies: " << world.getBodyCount() << "\n";
 
     std::cout << "Final Position: "
               << cereal.getPosition().x << ", "
