@@ -9,6 +9,7 @@
 #include "physics/RigidBody.h"
 #include <vector>
 #include <cstddef>
+#include <utility>
 
 class PhysicsWorld
 {
@@ -35,4 +36,7 @@ public:
 
     // getter for number of bodies in world
     std::size_t getBodyCount() const;
+
+    // find all potentially colliding pairs of bodies in the physics world
+    std::vector<std::pair<std::size_t, std::size_t>> detectCollisions() const;
 };
