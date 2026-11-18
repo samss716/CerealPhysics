@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include "collision/AABB.h"
 
 #include "physics/PhysicsWorld.h"
 
@@ -54,6 +55,21 @@ int main()
               << cereal.getVelocity().x << ", "
               << cereal.getVelocity().y << ", "
               << cereal.getVelocity().z << "\n";
+
+    // collision detection test
+    // create two bounding boxes
+    AABB boxA(Vector3(0.0, 0.0, 0.0), Vector3(0.5, 0.5, 0.5)); // center at origin, half extents of 0.5 in each direction
+    AABB boxB(Vector3(2.0, 0.0, 0.0), Vector3(0.5, 0.5, 0.5)); // center at origin, half extents of 0.5 in each direction, shifted along x-axis by 0.75
+
+    // check if they overlap
+    if (boxA.overlaps(boxB))
+    {
+        std::cout << "The two bounding boxes overlap!\n";
+    }
+    else
+    {
+        std::cout << "The two bounding boxes do not overlap.\n";
+    }
 
     return 0;
 }
