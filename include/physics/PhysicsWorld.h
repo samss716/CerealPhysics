@@ -7,6 +7,7 @@
 #pragma once
 
 #include "physics/RigidBody.h"
+#include "physics/collision/Collision.h"
 #include <vector>
 #include <cstddef>
 #include <utility>
@@ -40,6 +41,7 @@ public:
     // find all potentially colliding pairs of bodies in the physics world
     std::vector<std::pair<std::size_t, std::size_t>> detectCollisions() const;
 
-    std::vector<std::pair<std::size_t, std::size_t>>
-    detectNarrowPhaseCollisions() const;
+    std::vector<CollisionInfo> detectNarrowPhaseCollisions() const;
+
+    void resolveCollisions(double restitution = 0.2);
 };

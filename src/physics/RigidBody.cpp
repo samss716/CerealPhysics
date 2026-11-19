@@ -81,14 +81,14 @@ void RigidBody::setHalfExtents(const Vector3 &halfExtents)
     this->halfExtents = halfExtents;
 }
 
-//get collision sphere radius; lets PhysicsWorld retrieve radius. 
+// get collision sphere radius; lets PhysicsWorld retrieve radius.
 double RigidBody::getCollisionRadius() const
 {
     return collisionRadius;
 }
 
-//set collision sphere radius; adjust this for variously sized objs later
-void RigidBody::setCollisionRadius(double radius)
+// set collision sphere radius; adjust this for variously sized objs later
+void RigidBody::setCollisionRadius(double radius) // sphere based collision
 {
     if (radius < 0.0)
     {
@@ -96,3 +96,8 @@ void RigidBody::setCollisionRadius(double radius)
     }
     collisionRadius = radius;
 }
+
+void RigidBody::applyImpulse(const Vector3 &impulse)
+{
+    velocity += impulse / mass;
+} // implementing impulse function to change velocity of rigid body based on impulse applied.

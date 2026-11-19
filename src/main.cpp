@@ -20,6 +20,9 @@ int main()
     world.addBody(0.02, Vector3(0.015, 5.0, 0.0));
     world.addBody(0.02, Vector3(0.10, 5.0, 0.0));
 
+    // Give Body 0 an initial impulse toward Body 1
+    world.getBody(0).applyImpulse(Vector3(0.02, 0.0, 0.0));
+
     std::cout << "CerealPhysics initialized!\n";
 
     // simulate one physics step
@@ -37,8 +40,19 @@ int main()
 
     for (const auto &pair : confirmedCollisions)
     {
-        std::cout << "Collision detected between body " << pair.first << " and body " << pair.second << "\n";
+        std::cout << "Collision detected between body " << pair.bodyAIndex << " and body " << pair.bodyBIndex << "\n";
     }
 
+    std::cout << "\nVelocities after collision response:\n";
+
+    for (std::size_t i = 0; i < world.getBodyCount(); ++i)
+    {
+        const Vector3 &velocity = world.getBody(i).getVelocity();
+
+        std::cout << "Body " << i << ": "
+                  << velocity.x << ", "
+                  << velocity.y << ", "
+                  << velocity.z << "\n";
+    }
     return 0;
 }

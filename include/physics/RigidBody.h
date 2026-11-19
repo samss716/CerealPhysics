@@ -32,6 +32,8 @@ public:
     // update velocity and pos
     void integrate(double deltaTime);
 
+    void applyImpulse(const Vector3 &impulse); // impulse function
+
     // accessor getter
     double getMass() const;
     const Vector3 &getPosition() const; // passing vec by reference w/out copying. prevents caller function from modifying rigid body
