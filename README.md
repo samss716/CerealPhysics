@@ -60,9 +60,10 @@ GLM is managed through CMake FetchContent.
 - [x] Basic rigid-body implementation
 - [x] Gravity and force integration
 - [x] Physics world architecture
-- [ ] Fixed-timestep simulation
-- [ ] AABB collision detection
-- [ ] Collision response and friction
+- [x] Fixed-timestep simulation
+- [x] AABB collision detection
+- [x] Collision response and friction
+- [ ] Positional correctness
 - [ ] Angular dynamics
 - [ ] Cereal and bowl collision geometry
 - [ ] Real-time 3D visualization
