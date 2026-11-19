@@ -1,4 +1,5 @@
 
+// integration of acceleration,velocity,position vectors
 #include "physics/RigidBody.h"
 
 #include <stdexcept>
@@ -26,7 +27,7 @@ void RigidBody::applyForce(const Vector3 &force)
 }
 
 // update the body's motion
-void RigidBody::integrate(double deltaTime)
+void RigidBody::integrate(double deltaTime) // calc new pos and vel based on accumulated forces; semi-implicit for numerical stability
 {
     if (deltaTime <= 0.0)
     {

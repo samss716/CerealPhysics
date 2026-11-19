@@ -1,3 +1,4 @@
+// checks bounding box overlap
 #include "collision/AABB.h"
 
 #include <stdexcept>

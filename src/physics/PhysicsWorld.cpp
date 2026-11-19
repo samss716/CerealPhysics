@@ -1,3 +1,4 @@
+// Application of physics engine; applying gravity and coordinating simulation steps, handles collision detection and applies impulse response
 #include "physics/PhysicsWorld.h"
 
 // broad phase AABB
