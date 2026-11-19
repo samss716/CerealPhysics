@@ -25,13 +25,17 @@ int main()
     // simulate one physics step
     world.step(fixedTimeStep);
 
-    // detect overlapping bounding boxes
-    auto collisions = world.detectCollisions();
+    // detect overlapping bounding boxes broad phase
+    auto potentialCollisions = world.detectCollisions();
+
+    // narrow phase
+    auto confirmedCollisions = world.detectNarrowPhaseCollisions();
 
     std::cout << "Number of bodies: " << world.getBodyCount() << "\n";
-    std::cout << "Number of collisions: " << collisions.size() << "\n";
+    std::cout << "Number of potential collisions: " << potentialCollisions.size() << "\n";
+    std::cout << "Number of confirmed collisions: " << confirmedCollisions.size() << "\n";
 
-    for (const auto &pair : collisions)
+    for (const auto &pair : confirmedCollisions)
     {
         std::cout << "Collision detected between body " << pair.first << " and body " << pair.second << "\n";
     }

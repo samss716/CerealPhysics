@@ -10,7 +10,8 @@ RigidBody::RigidBody(double mass, const Vector3 &initialPosition)
       velocity(0.0),
       acceleration(0.0),
       accumForce(0.0),
-      halfExtents(0.01, 0.01, 0.01)
+      halfExtents(0.01, 0.01, 0.01),
+      collisionRadius(0.01)
 {
     if (mass <= 0.0)
     {
@@ -78,4 +79,20 @@ void RigidBody::setHalfExtents(const Vector3 &halfExtents)
         throw std::invalid_argument("Half extents can not be negative.");
     }
     this->halfExtents = halfExtents;
+}
+
+//get collision sphere radius; lets PhysicsWorld retrieve radius. 
+double RigidBody::getCollisionRadius() const
+{
+    return collisionRadius;
+}
+
+//set collision sphere radius; adjust this for variously sized objs later
+void RigidBody::setCollisionRadius(double radius)
+{
+    if (radius < 0.0)
+    {
+        throw std::invalid_argument("Collision radius can not be negative.");
+    }
+    collisionRadius = radius;
 }

@@ -8,6 +8,7 @@ class RigidBody
 private:
     // physics properties
     double mass;
+    double collisionRadius; // for collision detection
 
     // linear motion
     Vector3 position;
@@ -21,6 +22,9 @@ private:
 public:
     // Constructor
     RigidBody(double mass, const Vector3 &initialPosition);
+
+    double getCollisionRadius() const;      // getter for collision radius
+    void setCollisionRadius(double radius); // setter for collision radius
 
     // apply force to body
     void applyForce(const Vector3 &force);

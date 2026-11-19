@@ -13,7 +13,7 @@ std::vector<std::pair<std::size_t, std::size_t>> PhysicsWorld::detectCollisions(
 
             if (boxA.overlaps(boxB))
             {
-                collidingPairs.emplace_back(i, j); // emplace:
+                collidingPairs.emplace_back(i, j); // emplace: construct pair in place
             }
         }
     }
@@ -60,4 +60,34 @@ const RigidBody &PhysicsWorld::getBody(std::size_t index) const
 std::size_t PhysicsWorld::getBodyCount() const
 {
     return bodies.size();
+}
+
+std::vector<std::pair<std::size_t, std::size_t>> PhysicsWorld::detectNarrowPhaseCollisions() const
+{
+    // getting all potentially colliding pairs of bodies in the physics world from broad phase
+    auto potentialCollisions = detectCollisions();
+
+    // storing confirmed collision paris
+    std::vector<std::pair<std::size_t, std::size_t>> confirmedCollisions;
+
+    for (const auto &pair : potentialCollisions)
+    {
+        const RigidBody &bodyA = bodies[pair.first];
+        const RigidBody &bodyB = bodies[pair.second];
+
+        // Calculate the distance between the two bodies
+        Vector3 delta = bodyB.getPosition() - bodyA.getPosition(); // calcs vector from bodyA to bodyBs
+
+        double distance = glm::length(delta);
+
+        // Calculate the sum of their collision radii
+        double combinedRadius = bodyA.getCollisionRadius() + bodyB.getCollisionRadius();
+
+        // collision detect if sphere overlap
+        if (distance < combinedRadius)
+        {
+            confirmedCollisions.emplace_back(pair.first, pair.second);
+        }
+    }
+    return confirmedCollisions;
 }

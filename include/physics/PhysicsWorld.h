@@ -39,4 +39,7 @@ public:
 
     // find all potentially colliding pairs of bodies in the physics world
     std::vector<std::pair<std::size_t, std::size_t>> detectCollisions() const;
+
+    std::vector<std::pair<std::size_t, std::size_t>>
+    detectNarrowPhaseCollisions() const;
 };
