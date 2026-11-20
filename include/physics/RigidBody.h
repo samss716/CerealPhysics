@@ -20,6 +20,8 @@ private:
     Vector3 accumForce;
 
 public:
+    void translate(const Vector3 &displacement); // function to allow physics world to move body by specified displacement vector. This is used to resolve collisions by moving bodies apart.
+
     // Constructor
     RigidBody(double mass, const Vector3 &initialPosition);
 

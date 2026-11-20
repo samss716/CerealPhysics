@@ -1,5 +1,6 @@
 // Application of physics engine; applying gravity and coordinating simulation steps, handles collision detection and applies impulse response
 #include "physics/PhysicsWorld.h"
+#include <algorithm>
 
 // broad phase AABB
 std::vector<std::pair<std::size_t, std::size_t>> PhysicsWorld::detectCollisions() const
@@ -130,25 +131,33 @@ void PhysicsWorld::resolveCollisions(double restitution)
         // Calculate relative velocity along the normal with dot product
         double velocityAlongNormal = glm::dot(relativeVelocity, collision.normal);
 
-        // Only resolve if bodies are moving towards each other
-        if (velocityAlongNormal >= 0.0)
-        {
-            continue;
-        } // if moving away, skip
-
         // Calculate impulse scalar/inverse massess
         double inverseMassA = 1.0 / bodyA.getMass();
         double inverseMassB = 1.0 / bodyB.getMass();
 
-        // calc impulse magnitude
-        double impulseMagnitude = -(1.0 + restitution) * velocityAlongNormal / (inverseMassA + inverseMassB);
+        if (velocityAlongNormal < 0) // impulse calculation only if bodies are moving towards each other; want positional correction even if they are moving apart to prevent sinking due to numerical errors
+        {
+            // calc impulse magnitude
+            double impulseMagnitude = -(1.0 + restitution) * velocityAlongNormal / (inverseMassA + inverseMassB);
 
-        // convert scalar impulse into a vector
-        //  Apply impulse to both bodies
-        Vector3 impulse = impulseMagnitude * collision.normal;
+            // convert scalar impulse into a vector
+            //  Apply impulse to both bodies
+            Vector3 impulse = impulseMagnitude * collision.normal;
 
-        // apply equal and opposite impulses to the two bodies
-        bodyA.applyImpulse(-impulse);
-        bodyB.applyImpulse(impulse);
+            // apply equal and opposite impulses to the two bodies
+            bodyA.applyImpulse(-impulse);
+            bodyB.applyImpulse(impulse);
+        }
+
+        // Positional correction to prevent sinking due to numerical errors, moves bodies apart along the collision normal based on penetration depth and inverse masses
+        const double percent = 0.8; // correcting 80% overlap
+        const double slop = 0.01;   // small value to tolerate some overlap; avoid recalculating correction for very small overlaps that cause jittering
+
+        double correctionMagnitude = std::max(collision.penetration - slop, 0.0) / (inverseMassA + inverseMassB) * percent;
+
+        Vector3 correction = correctionMagnitude * collision.normal;
+
+        bodyA.translate(-inverseMassA * correction);
+        bodyB.translate(inverseMassB * correction); // inverse masses determine how much each body is moved based on their mass; heavier bodies move less than lighter ones
     }
 }

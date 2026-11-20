@@ -102,3 +102,8 @@ void RigidBody::applyImpulse(const Vector3 &impulse)
 {
     velocity += impulse / mass;
 } // implementing impulse function to change velocity of rigid body based on impulse applied.
+
+void RigidBody::translate(const Vector3 &displacement)
+{
+    position += displacement; // implementing translate function to allow PhysicsWorld to move body by specified displacement vector without exposing private variable. used to resolve collisions by moving bodies apart.
+}
